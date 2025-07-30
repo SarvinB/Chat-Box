@@ -7,7 +7,7 @@ def recieve(server):
     while True:
         stri = (server.recv(1024)).decode()
         if (len(stri) != 0):
-            print("... %s" %(stri))
+            print(stri)
         
 def send(server):
     while True:
@@ -27,6 +27,7 @@ ip = args.ip
 
 s = socket.socket()
 # connect to the server on local computer
+
 s.connect((ip, port))
 
 reciever = threading.Thread(target=recieve, args=(s, ))

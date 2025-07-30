@@ -3,11 +3,17 @@ import threading
 import argparse
 import json
 
-def recieve(client1, client2):
+def send_to_all(message, client):
+    for c in clients:
+        if ( c != client):
+            c.send(message)
+
+def recieve(client, addr):
     while True:
-        str = client1.recv(1024)
-        if (len(str) != 0):
-            client2.send(str)
+        message = client.recv(1024)
+        if (len(message) != 0):
+            message = str(addr) + ': ' + message.decode()
+            send_to_all(message.encode("utf-8"), client)
             
 # def establish_connection (clients):
 #     while True
@@ -26,18 +32,16 @@ s.bind(('', port))
 print ("socket binded to %s" %(port))
 
 # put the socket into listening mode
-s.listen(5)    
+clients = []
+addrs = []
+
 print ("socket is listening")
-c1, addr = s.accept()
-print ('Got connection from', addr )
 
-c2, addr = s.accept()
-print ('Got connection from', addr )
+while (True):
+    s.listen(5)    
+    c, addr = s.accept()
+    print ('Got connection from', addr)
+    clients.append(c)
+    addrs.append(addr[1])
+    threading.Thread(target=recieve, args=(c, addr[1])).start()
 
-reciever1 = threading.Thread(target=recieve, args=(c1, c2, ))
-reciever1.start()
-print("reciever1 start...")
-
-reciever2 = threading.Thread(target=recieve, args=(c2, c1, ))
-reciever2.start()
-print("reciever2 start...")
