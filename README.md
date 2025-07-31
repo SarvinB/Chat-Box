@@ -10,7 +10,7 @@ docker build -t chat-room-client:1.0 client
 # Run it in Path where server folder is
 docker build -t chat-room-server:1.0 server
 
-# Make Network for comminucating between server and clients
+# Make Network for communicating between server and clients
 docker network create chat-room-net
 
 # For more client just change name of container
