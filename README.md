@@ -1,7 +1,7 @@
 ## Without Docker
 Run server with one arugment port and clients with two argument host and port of server
 
-## With doucker
+## With docker
 
 ```bash
 # Run it in Path where client folder is
